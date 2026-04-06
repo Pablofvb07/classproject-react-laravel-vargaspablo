@@ -1,189 +1,206 @@
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+import "./App.css";
 
 function App() {
-  const [products, setProducts] = useState([]);
+  const [user, setUser] = useState(null);
+  const [isRegister, setIsRegister] = useState(false);
+
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [products, setProducts] = useState([]);
+  const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
   const [editingId, setEditingId] = useState(null);
 
+  const API = "http://127.0.0.1:8000/api";
+
+  // 📦 OBTENER PRODUCTOS
   const getProducts = () => {
-    fetch("http://127.0.0.1:8000/api/products")
+    fetch(`${API}/products`)
       .then(res => res.json())
       .then(data => setProducts(data));
   };
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    if (user) getProducts();
+  }, [user]);
 
+  // 🔐 LOGIN
+  const login = (e) => {
+    e.preventDefault();
+
+    fetch(`${API}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          alert("Credenciales incorrectas");
+        } else {
+          setUser(data);
+        }
+      });
+  };
+
+  // 📝 REGISTER
+  const register = (e) => {
+    e.preventDefault();
+
+    fetch(`${API}/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, email, password })
+    }).then(() => {
+      alert("Usuario creado");
+      setIsRegister(false);
+    });
+  };
+
+  // ➕ CREAR / ✏️ EDITAR
   const saveProduct = (e) => {
     e.preventDefault();
 
-    if (!name || !price) {
-      Swal.fire("Error", "Completa todos los campos", "warning");
-      return;
-    }
-
     const url = editingId
-      ? `http://127.0.0.1:8000/api/products/${editingId}`
-      : "http://127.0.0.1:8000/api/products";
+      ? `${API}/products/${editingId}`
+      : `${API}/products`;
 
     const method = editingId ? "PUT" : "POST";
 
     fetch(url, {
       method,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name, price })
-    })
-      .then(() => {
-        Swal.fire("Éxito", editingId ? "Actualizado" : "Creado", "success");
-        setName("");
-        setPrice("");
-        setEditingId(null);
-        getProducts();
-      });
-  };
-
-  const deleteProduct = (id) => {
-    Swal.fire({
-      title: "¿Eliminar?",
-      text: "No podrás revertir esto",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://127.0.0.1:8000/api/products/${id}`, {
-          method: "DELETE"
-        }).then(() => {
-          Swal.fire("Eliminado", "", "success");
-          getProducts();
-        });
-      }
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: productName, price })
+    }).then(() => {
+      setProductName("");
+      setPrice("");
+      setEditingId(null);
+      getProducts();
     });
   };
 
+  // ❌ ELIMINAR
+  const deleteProduct = (id) => {
+    fetch(`${API}/products/${id}`, {
+      method: "DELETE"
+    }).then(() => getProducts());
+  };
+
+  // ✏️ EDITAR
   const editProduct = (p) => {
-    setName(p.name);
+    setProductName(p.name);
     setPrice(p.price);
     setEditingId(p.id);
   };
 
-  return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>CRUD Productos 🚀</h1>
+  // 🔐 LOGIN / REGISTER UI
+  if (!user) {
+    return (
+      <div className="center">
+        <div className="card">
+          <h2>{isRegister ? "Crear Cuenta" : "Bienvenido"}</h2>
+          <p>{isRegister ? "Regístrate para continuar" : "Inicia sesión"}</p>
 
-      <form onSubmit={saveProduct} style={styles.form}>
+          <form onSubmit={isRegister ? register : login}>
+            {isRegister && (
+              <input
+                className="input"
+                placeholder="Nombre"
+                onChange={(e) => setName(e.target.value)}
+              />
+            )}
+
+            <input
+              className="input"
+              type="email"
+              placeholder="Correo"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <input
+              className="input"
+              type="password"
+              placeholder="Contraseña"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button className="button">
+              {isRegister ? "Registrarse" : "Ingresar"}
+            </button>
+          </form>
+
+          <button
+            className="link"
+            onClick={() => setIsRegister(!isRegister)}
+          >
+            {isRegister ? "Ya tengo cuenta" : "Crear cuenta"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // 🔓 APP PRINCIPAL (CRUD)
+  return (
+    <div className="container">
+      <h1 style={{ color: "white" }}>
+        Bienvenido {user.name} 🚀
+      </h1>
+
+      <button
+        style={{
+          marginBottom: "15px",
+          padding: "8px",
+          borderRadius: "5px",
+          border: "none",
+          cursor: "pointer"
+        }}
+        onClick={() => setUser(null)}
+      >
+        Cerrar sesión
+      </button>
+
+      <form onSubmit={saveProduct} className="form">
         <input
-          style={styles.input}
-          type="text"
-          placeholder="Nombre"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          className="input"
+          placeholder="Producto"
+          value={productName}
+          onChange={(e) => setProductName(e.target.value)}
         />
         <input
-          style={styles.input}
+          className="input"
           type="number"
           placeholder="Precio"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-        <button style={styles.button}>
+        <button className="button">
           {editingId ? "Actualizar" : "Crear"}
         </button>
       </form>
 
-      <div style={styles.list}>
-        {products.map(p => (
-          <div key={p.id} style={styles.card}>
-            <div>
-              <strong>{p.name}</strong>
-              <p>${p.price}</p>
-            </div>
-
-            <div>
-              <button
-                style={styles.editBtn}
-                onClick={() => editProduct(p)}
-              >
-                ✏️
-              </button>
-              <button
-                style={styles.deleteBtn}
-                onClick={() => deleteProduct(p.id)}
-              >
-                🗑️
-              </button>
-            </div>
+      {products.map(p => (
+        <div key={p.id} className="product">
+          <div>
+            <strong>{p.name}</strong>
+            <p>${p.price}</p>
           </div>
-        ))}
-      </div>
+
+          <div>
+            <button onClick={() => editProduct(p)}>✏️</button>
+            <button onClick={() => deleteProduct(p.id)}>🗑️</button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
-
-// 🎨 estilos mejorados
-const styles = {
-  container: {
-    maxWidth: "600px",
-    margin: "auto",
-    textAlign: "center",
-    fontFamily: "Arial",
-    padding: "20px"
-  },
-  title: {
-    marginBottom: "20px"
-  },
-  form: {
-    display: "flex",
-    gap: "10px",
-    marginBottom: "20px"
-  },
-  input: {
-    padding: "10px",
-    flex: 1,
-    borderRadius: "5px",
-    border: "1px solid #ccc"
-  },
-  button: {
-    padding: "10px 20px",
-    background: "#4CAF50",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer"
-  },
-  list: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px"
-  },
-  card: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "15px",
-    borderRadius: "10px",
-    boxShadow: "0 2px 5px rgba(0,0,0,0.1)"
-  },
-  editBtn: {
-    marginRight: "5px",
-    background: "orange",
-    border: "none",
-    padding: "5px 10px",
-    borderRadius: "5px",
-    cursor: "pointer"
-  },
-  deleteBtn: {
-    background: "red",
-    color: "white",
-    border: "none",
-    padding: "5px 10px",
-    borderRadius: "5px",
-    cursor: "pointer"
-  }
-};
 
 export default App;
