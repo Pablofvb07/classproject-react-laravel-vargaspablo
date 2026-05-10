@@ -8,6 +8,7 @@ import Ventas from "./pages/admin/Ventas";
 import VendedorLayout from "./pages/vendedor/VendedorLayout";
 import Inicio from "./pages/vendedor/Inicio";
 import Inventario from "./pages/vendedor/Inventario";
+import './styles/main.scss'
 
 function App() {
   return (
