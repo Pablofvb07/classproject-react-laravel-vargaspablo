@@ -22,15 +22,11 @@ SESSION_DRIVER=cookie
 SESSION_DOMAIN=
 EOF
 
-# Publicar config de Sanctum
-php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider" --force
-
 # Correr migraciones
 php artisan migrate --force
 
-# Limpiar y cachear config
+# Limpiar caché solamente, sin cachear
 php artisan config:clear
-php artisan config:cache
 php artisan cache:clear
 
 # Iniciar Apache
