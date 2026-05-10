@@ -1,0 +1,324 @@
+@import 'variables';
+
+// Inputs
+.input {
+  width: 100%;
+  padding: 10px $spacing-md;
+  border: 1.5px solid $border;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  color: $text-primary;
+  background: $bg-white;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+  }
+
+  &::placeholder {
+    color: $text-muted;
+  }
+}
+
+// Botones
+.button {
+  padding: 10px $spacing-lg;
+  background: $primary;
+  color: $text-white;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  font-weight: 500;
+  transition: background 0.2s ease;
+  border: none;
+
+  &:hover { background: $primary-dark; }
+
+  &.ghost {
+    background: transparent;
+    color: $text-secondary;
+    border: 1.5px solid $border;
+
+    &:hover {
+      background: $bg-content;
+      color: $text-primary;
+    }
+  }
+
+  &.danger {
+    background: $danger;
+    &:hover { background: darken($danger, 8%); }
+  }
+}
+
+.link {
+  background: none;
+  border: none;
+  color: $text-secondary;
+  font-size: $font-size-base;
+  cursor: pointer;
+  padding: $spacing-sm 0;
+  transition: color 0.2s;
+
+  &:hover { color: $primary; }
+}
+
+// Formularios
+.form {
+  background: $bg-white;
+  border: 1px solid $border;
+  border-radius: $border-radius;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  max-width: 600px;
+  box-shadow: $shadow-sm;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  h3 {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-xs;
+  }
+}
+
+// Tablas
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background: $bg-white;
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  border: 1px solid $border;
+
+  thead tr { background: $primary; }
+
+  th {
+    padding: 12px $spacing-md;
+    text-align: left;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $text-white;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 12px $spacing-md;
+    font-size: $font-size-base;
+    color: $text-primary;
+    border-bottom: 1px solid $border;
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    transition: background 0.15s ease;
+
+    &:last-child td { border-bottom: none; }
+    &:hover { background: #f0f0ff; }
+  }
+
+  .btn-icon {
+    background: none;
+    border: 1.5px solid $border;
+    border-radius: $border-radius-sm;
+    padding: 5px 8px;
+    margin-right: 4px;
+    font-size: 14px;
+    transition: all 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      background: $primary;
+      border-color: $primary;
+      color: white;
+    }
+
+    &.danger:hover {
+      background: $danger;
+      border-color: $danger;
+    }
+  }
+}
+
+// Alertas
+.alert {
+  padding: 10px $spacing-md;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  margin-bottom: $spacing-md;
+
+  &.success {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+
+  &.danger {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+}
+
+// Modal
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  background: $bg-white;
+  border-radius: $border-radius;
+  padding: $spacing-xl;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: $shadow-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  h3 {
+    font-size: $font-size-xl;
+    color: $text-primary;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: flex-end;
+    margin-top: $spacing-sm;
+  }
+}
+
+// Badge
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: $font-size-sm;
+  font-weight: 500;
+
+  &.accesorio {
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+
+  &.bateria {
+    background: #fefce8;
+    color: #854d0e;
+  }
+}
+
+// Utilidades
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: $spacing-sm;
+}
+
+.form-actions {
+  display: flex;
+  gap: $spacing-sm;
+  justify-content: flex-end;
+  margin-top: $spacing-sm;
+}
+// Dashboard vendedor
+.dashboard {
+  .dashboard-header {
+    margin-bottom: $spacing-xl;
+
+    h2 {
+      font-size: 24px;
+      color: $text-primary;
+    }
+
+    p {
+      color: $text-secondary;
+      margin-top: $spacing-xs;
+    }
+  }
+
+  .dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: $spacing-lg;
+  }
+
+  .dashboard-card {
+    background: $bg-white;
+    border: 1px solid $border;
+    border-radius: $border-radius;
+    padding: $spacing-xl;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    box-shadow: $shadow-sm;
+    position: relative;
+
+    &:hover {
+      border-color: $primary;
+      box-shadow: $shadow-md;
+      transform: translateY(-2px);
+    }
+
+    &.disabled {
+      cursor: default;
+      opacity: 0.6;
+
+      &:hover {
+        border-color: $border;
+        box-shadow: $shadow-sm;
+        transform: none;
+      }
+    }
+
+    .dashboard-icon {
+      font-size: 36px;
+    }
+
+    h3 {
+      font-size: $font-size-lg;
+      color: $text-primary;
+    }
+
+    p {
+      font-size: $font-size-sm;
+      color: $text-secondary;
+      line-height: 1.5;
+    }
+
+    .coming-soon {
+      display: inline-block;
+      padding: 2px 10px;
+      background: #fef9c3;
+      color: #854d0e;
+      border-radius: 99px;
+      font-size: $font-size-sm;
+      font-weight: 500;
+      width: fit-content;
+    }
+  }
+}
+
+// Modal subtitle
+.modal-subtitle {
+  font-size: $font-size-sm;
+  color: $text-secondary;
+  margin-top: -$spacing-sm;
+}

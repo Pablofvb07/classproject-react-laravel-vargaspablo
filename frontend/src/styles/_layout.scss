@@ -1,0 +1,96 @@
+@import 'variables';
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: $bg-sidebar;
+  display: flex;
+  flex-direction: column;
+  padding: $spacing-lg $spacing-md;
+  gap: $spacing-sm;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  .sidebar-brand {
+    font-size: $font-size-xl;
+    font-weight: 700;
+    color: $text-white;
+    margin-bottom: $spacing-sm;
+    letter-spacing: -0.5px;
+  }
+
+  .sidebar-user {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    padding-bottom: $spacing-md;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: $spacing-sm;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    flex: 1;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: 10px $spacing-md;
+    border-radius: $border-radius-sm;
+    color: $text-muted;
+    font-size: $font-size-base;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255,255,255,0.08);
+      color: $text-white;
+    }
+
+    &.active {
+      background: $primary;
+      color: $text-white;
+      font-weight: 500;
+    }
+  }
+
+  .logout-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: $text-muted;
+    padding: 10px $spacing-md;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-base;
+    transition: all 0.2s ease;
+    margin-top: auto;
+
+    &:hover {
+      background: $danger;
+      border-color: $danger;
+      color: $text-white;
+    }
+  }
+}
+
+.content {
+  flex: 1;
+  margin-left: 240px;
+  padding: $spacing-xl;
+  background: $bg-content;
+  min-height: 100vh;
+
+  h2 {
+    font-size: 22px;
+    margin-bottom: $spacing-lg;
+    color: $text-primary;
+  }
+}

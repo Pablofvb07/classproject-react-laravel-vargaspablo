@@ -1,0 +1,44 @@
+@import 'variables';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: $font;
+  font-size: $font-size-base;
+  color: $text-primary;
+  background: $bg-content;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  font-family: $font;
+  font-size: $font-size-base;
+  border: none;
+  outline: none;
+}
+
+input, select {
+  font-family: $font;
+  font-size: $font-size-base;
+  outline: none;
+}
+
+ul {
+  list-style: none;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 600;
+  color: $text-primary;
+}   
