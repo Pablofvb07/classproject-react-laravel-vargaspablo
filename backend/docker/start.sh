@@ -18,14 +18,19 @@ DB_USERNAME=${DB_USERNAME}
 DB_PASSWORD=${DB_PASSWORD}
 
 SANCTUM_STATEFUL_DOMAINS=${SANCTUM_STATEFUL_DOMAINS:-localhost}
-SESSION_DRIVER=${SESSION_DRIVER:-cookie}
+SESSION_DRIVER=cookie
+SESSION_DOMAIN=
 EOF
+
+# Publicar config de Sanctum
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider" --force
 
 # Correr migraciones
 php artisan migrate --force
 
-# Limpiar caché
+# Limpiar y cachear config
 php artisan config:clear
+php artisan config:cache
 php artisan cache:clear
 
 # Iniciar Apache
