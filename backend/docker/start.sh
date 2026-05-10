@@ -1,31 +1,30 @@
 #!/bin/bash
 
 # Crear .env desde variables de entorno
-cat > /var/www/html/.env << EOF
-APP_NAME=${APP_NAME:-AutoStock}
-APP_ENV=${APP_ENV:-production}
-APP_KEY=${APP_KEY}
-APP_DEBUG=${APP_DEBUG:-false}
-APP_URL=${APP_URL:-http://localhost}
-
+cat > /var/www/html/.env << 'ENVFILE'
+APP_NAME=AutoStock
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=http://localhost
 LOG_CHANNEL=stack
-
-DB_CONNECTION=${DB_CONNECTION:-mysql}
-DB_HOST=${DB_HOST}
-DB_PORT=${DB_PORT:-3306}
-DB_DATABASE=${DB_DATABASE}
-DB_USERNAME=${DB_USERNAME}
-DB_PASSWORD=${DB_PASSWORD}
-
-SANCTUM_STATEFUL_DOMAINS=${SANCTUM_STATEFUL_DOMAINS:-localhost}
 SESSION_DRIVER=cookie
 SESSION_DOMAIN=
-EOF
+ENVFILE
+
+# Agregar variables con valores dinámicos por separado
+echo "APP_KEY=${APP_KEY}" >> /var/www/html/.env
+echo "DB_CONNECTION=${DB_CONNECTION:-mysql}" >> /var/www/html/.env
+echo "DB_HOST=${DB_HOST}" >> /var/www/html/.env
+echo "DB_PORT=${DB_PORT:-3306}" >> /var/www/html/.env
+echo "DB_DATABASE=${DB_DATABASE}" >> /var/www/html/.env
+echo "DB_USERNAME=${DB_USERNAME}" >> /var/www/html/.env
+echo "DB_PASSWORD=${DB_PASSWORD}" >> /var/www/html/.env
+echo "SANCTUM_STATEFUL_DOMAINS=${SANCTUM_STATEFUL_DOMAINS:-localhost}" >> /var/www/html/.env
 
 # Correr migraciones
 php artisan migrate --force
 
-# Limpiar caché solamente, sin cachear
+# Limpiar caché
 php artisan config:clear
 php artisan cache:clear
 
